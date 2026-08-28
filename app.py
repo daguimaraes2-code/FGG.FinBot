@@ -21,7 +21,7 @@ try:
     
     genai.configure(api_key=GENAI_API_KEY)
     # Aqui está a correção que fizemos antes:
-    model = genai.GenerativeModel('models/gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-1.5-flash')
 except Exception as e:
     st.error(f"Erro nos Secrets: {e}")
     st.stop()
