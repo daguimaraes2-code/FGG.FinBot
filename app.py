@@ -20,7 +20,7 @@ try:
     
     # Tentamos o nome padrão, se falhar ele avisa
     model_name = 'gemini-1.5-flash' 
-    model = genai.GenerativeModel('gemini-1.5-flash-latest')
+    model = genai.GenerativeModel('gemini-1.5-flash')
 except Exception as e:
     st.error(f"Erro na configuração da IA: {e}")
     st.stop()
