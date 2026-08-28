@@ -16,10 +16,11 @@ CATEGORIAS = ["Alimentação", "Transporte", "Lazer", "Moradia", "Saúde", "Educ
 # Definimos o modelo fora de funções para ele ser global
 try:
     GENAI_API_KEY = st.secrets["GEMINI_API_KEY"]
-    genai.configure(api_key=GENAI_API_KEY)
     
-    # Tentamos o nome padrão, se falhar ele avisa
-    model_name = 'gemini-1.5-flash' 
+    # Configuramos a API forçando o transporte REST (evita erro 404 em chaves AQ)
+    genai.configure(api_key=GENAI_API_KEY, transport='rest')
+    
+    # Usamos o modelo sem o prefixo 'models/' e sem o '-latest'
     model = genai.GenerativeModel('gemini-1.5-flash')
 except Exception as e:
     st.error(f"Erro na configuração da IA: {e}")
