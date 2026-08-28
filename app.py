@@ -15,7 +15,7 @@ try:
     GOOGLE_SHEETS_CREDENTIALS = st.secrets["gcp_service_account"]
     NOME_PLANILHA = st.secrets["nome_planilha"]
     genai.configure(api_key=GENAI_API_KEY)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    genai.GenerativeModel('models/gemini-1.5-flash')
 except:
     st.error("Configure os Secrets no Streamlit Cloud.")
     st.stop()
