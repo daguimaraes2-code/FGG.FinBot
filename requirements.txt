@@ -1,5 +1,5 @@
 streamlit
 gspread
 oauth2client
-google-generativeai
+google-generativeai>=0.7.0
 Pillow
