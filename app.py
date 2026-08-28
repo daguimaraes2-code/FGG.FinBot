@@ -16,17 +16,32 @@ CATEGORIAS = ["Alimentação", "Transporte", "Lazer", "Moradia", "Saúde", "Educ
 # Definimos o modelo fora de funções para ele ser global
 try:
     GENAI_API_KEY = st.secrets["GEMINI_API_KEY"]
-    
-    # Configuramos a API
     genai.configure(api_key=GENAI_API_KEY)
     
-    # FORÇAMOS O USO DO MODELO 1.0 PRO (É o mais compatível com chaves AQ e versão v1)
-    # Se o 1.5 Flash dá 404, o 1.0 Pro costuma entrar na hora!
-    model = genai.GenerativeModel('gemini-1.0-pro')
+    # Tentamos listar os modelos disponíveis para essa chave AQ
+    # Isso ajuda a descobrir qual nome o Google aceita para você
+    disponiveis = [m.name for m in genai.list_models()]
+    
+    # Escolha automática: se o flash estiver na lista, usa ele. Se não, usa o pro.
+    if 'models/gemini-1.5-flash' in disponiveis:
+        model_name = 'gemini-1.5-flash'
+    elif 'models/gemini-1.0-pro' in disponiveis:
+        model_name = 'gemini-1.0-pro'
+    else:
+        # Se não listar nada, tentamos o nome padrão como última tentativa
+        model_name = 'gemini-1.5-flash'
+        
+    model = genai.GenerativeModel(model_name)
     
 except Exception as e:
-    st.error(f"Erro na configuração da IA: {e}")
-    st.stop()
+    st.error(f"Erro ao configurar IA: {e}")
+    # Botão de diagnóstico para te ajudar
+    if st.button("Ver modelos disponíveis para minha chave"):
+        try:
+            modelos = [m.name for m in genai.list_models()]
+            st.write(modelos)
+        except Exception as e2:
+            st.write(f"Não foi possível listar modelos: {e2}")
 
 # --- 3. FUNÇÕES DE APOIO ---
 
