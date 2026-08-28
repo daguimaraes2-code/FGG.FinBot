@@ -16,14 +16,13 @@ CATEGORIAS = ["Alimentação", "Transporte", "Lazer", "Moradia", "Saúde", "Educ
 # Definimos o modelo fora de funções para ele ser global
 try:
     GENAI_API_KEY = st.secrets["GEMINI_API_KEY"]
-    GOOGLE_SHEETS_CREDENTIALS = st.secrets["gcp_service_account"]
-    NOME_PLANILHA = st.secrets["nome_planilha"]
-    
     genai.configure(api_key=GENAI_API_KEY)
-    # Aqui está a correção que fizemos antes:
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    
+    # Tentamos o nome padrão, se falhar ele avisa
+    model_name = 'gemini-1.5-flash' 
+    model = genai.GenerativeModel(model_name)
 except Exception as e:
-    st.error(f"Erro nos Secrets: {e}")
+    st.error(f"Erro na configuração da IA: {e}")
     st.stop()
 
 # --- 3. FUNÇÕES DE APOIO ---
