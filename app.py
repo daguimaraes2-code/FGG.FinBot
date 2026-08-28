@@ -17,11 +17,13 @@ CATEGORIAS = ["Alimentação", "Transporte", "Lazer", "Moradia", "Saúde", "Educ
 try:
     GENAI_API_KEY = st.secrets["GEMINI_API_KEY"]
     
-    # Configuramos a API forçando o transporte REST (evita erro 404 em chaves AQ)
-    genai.configure(api_key=GENAI_API_KEY, transport='rest')
+    # Configuramos a API
+    genai.configure(api_key=GENAI_API_KEY)
     
-    # Usamos o modelo sem o prefixo 'models/' e sem o '-latest'
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    # FORÇAMOS O USO DO MODELO 1.0 PRO (É o mais compatível com chaves AQ e versão v1)
+    # Se o 1.5 Flash dá 404, o 1.0 Pro costuma entrar na hora!
+    model = genai.GenerativeModel('gemini-1.0-pro')
+    
 except Exception as e:
     st.error(f"Erro na configuração da IA: {e}")
     st.stop()
